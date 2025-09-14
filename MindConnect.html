@@ -3,12 +3,527 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MindConnect - Mental Health Support Platform connecting individuals with depression to peer support, counselors, healthcare providers, and community resources">
-    <meta name="keywords" content="mental health, depression support, peer groups, counseling, SDG 3, healthcare, community support">
-    <meta name="author" content="MindConnect Team">
     <title>MindConnect - Mental Health Support Platform</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #7b68ee;
+            --accent-color: #50c878;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --background-light: #f8f9fa;
+            --white: #ffffff;
+            --border-color: #e0e0e0;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--background-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--accent-color);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-top: 80px;
+            min-height: calc(100vh - 160px);
+        }
+
+        .page {
+            display: none;
+            padding: 2rem 0;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            background: var(--accent-color);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background: #45b369;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(80, 200, 120, 0.3);
+        }
+
+        /* Card Styles */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .card p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Form Styles */
+        .form-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+
+        /* Button Styles */
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: #3a7bd5;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--text-light);
+        }
+
+        .btn-secondary:hover {
+            background: #555;
+        }
+
+        .btn-success {
+            background: var(--success-color);
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        /* Dashboard Styles */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .dashboard-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-card .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Resource List Styles */
+        .resource-list {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .resource-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .resource-item:hover {
+            background-color: var(--background-light);
+        }
+
+        .resource-item:last-child {
+            border-bottom: none;
+        }
+
+        .resource-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-item p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .resource-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Progress Tracking */
+        .progress-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: var(--text-light);
+            float: right;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover {
+            color: var(--text-dark);
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: var(--text-dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--primary-color);
+                flex-direction: column;
+                padding: 1rem 0;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .form-container {
+                padding: 2rem;
+                margin: 1rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Alert Styles */
+        .alert {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid var(--danger-color);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -25,7 +540,7 @@
                         <li><a href="#" onclick="showPage('support')" class="nav-link">Support</a></li>
                         <li><a href="#" onclick="showPage('about')" class="nav-link">About</a></li>
                     </ul>
-                    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle mobile menu">☰</button>
+                    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
                 </nav>
             </div>
         </div>
@@ -186,9 +701,9 @@
                 <div class="cards-grid">
                     <div class="card">
                         <h3>🆘 Crisis Support</h3>
-                        <p><strong>Emergency:</strong> 911 or your local emergency number</p>
-                        <p><strong>Crisis Helpline:</strong> 988 (Suicide & Crisis Lifeline)</p>
-                        <p><strong>Crisis Text Line:</strong> Text HOME to 741741</p>
+                        <p><strong>Emergency:</strong> 0979899485 or your local emergency number</p>
+                        <p><strong>Crisis Helpline:</strong> 0979899485 (Suicide & Crisis Lifeline)</p>
+                        <p><strong>Crisis Text Line:</strong> Text HOME to 0979899485</p>
                     </div>
                     <div class="card">
                         <h3>📞 Immediate Help</h3>
@@ -522,7 +1037,7 @@
                         <h3>Contact Us</h3>
                         <p>If you need immediate help or have questions about our platform:</p>
                         <div style="margin-top: 1rem;">
-                            <p><strong>Crisis Support:</strong> 988 or your local emergency number</p>
+                            <p><strong>Crisis Support:</strong> 0979899485 or your local emergency number</p>
                             <p><strong>General Inquiries:</strong> info@mindconnect.org</p>
                             <p><strong>Technical Support:</strong> support@mindconnect.org</p>
                         </div>
@@ -539,12 +1054,12 @@
             <span class="close" onclick="closeCrisisModal()">&times;</span>
             <h3 style="color: var(--danger-color); margin-bottom: 1rem;">🆘 Immediate Crisis Support</h3>
             <div class="alert alert-danger">
-                <strong>If you are in immediate danger, please call emergency services (911) or go to your nearest emergency room.</strong>
+                <strong>If you are in immediate danger, please call emergency services (0979899485) or go to your nearest emergency room.</strong>
             </div>
             <div style="margin: 1.5rem 0;">
                 <h4>24/7 Crisis Helplines:</h4>
-                <p><strong>Suicide & Crisis Lifeline:</strong> 988</p>
-                <p><strong>Crisis Text Line:</strong> Text HOME to 741741</p>
+                <p><strong>Suicide & Crisis Lifeline:</strong> 0979899485</p>
+                <p><strong>Crisis Text Line:</strong> Text HOME to 0979899485</p>
                 <p><strong>International Association for Suicide Prevention:</strong> <a href="https://www.iasp.info/resources/Crisis_Centres/" target="_blank">Find local crisis centers</a></p>
             </div>
             <div style="margin: 1.5rem 0;">
@@ -556,4 +1071,414 @@
                     <li>Your life has value</li>
                 </ul>
             </div>
-            <button class="btn btn-success" onclick="callCrisisLine()">Call Crisis Line Now</button
+            <button class="btn btn-success" onclick="callCrisisLine()">Call Crisis Line Now</button>
+        </div>
+    </div>
+
+    <!-- Check-in Modal -->
+    <div id="checkinModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCheckinModal()">&times;</span>
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">📝 Daily Check-in</h3>
+            <form id="checkinForm">
+                <div class="form-group">
+                    <label for="moodRating">How are you feeling today? (1-10)</label>
+                    <input type="range" id="moodRating" name="moodRating" min="1" max="10" value="5">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-light);">
+                        <span>😢 Very Low</span>
+                        <span>😊 Great</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="activities">What activities did you do today?</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="exercise" name="activities" value="exercise">
+                        <label for="exercise">Exercise</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="socializing" name="activities" value="socializing">
+                        <label for="socializing">Socializing</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="selfcare" name="activities" value="selfcare">
+                        <label for="selfcare">Self-care</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="therapy" name="activities" value="therapy">
+                        <label for="therapy">Therapy/Counseling</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Additional notes (optional)</label>
+                    <textarea id="notes" name="notes" rows="3" placeholder="How was your day? Any thoughts or feelings you'd like to record?"></textarea>
+                </div>
+                
+                <button type="submit" class="btn" style="width: 100%;">Save Check-in</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <a href="#" onclick="showPage('support')">Find Support</a>
+                    <a href="#" onclick="showCrisisModal()">Crisis Support</a>
+                    <a href="#" onclick="showPage('resources')">All Resources</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Platform</h4>
+                    <a href="#" onclick="showPage('register')">Register</a>
+                    <a href="#" onclick="showPage('dashboard')">Dashboard</a>
+                    <a href="#" onclick="showPage('about')">About</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Support SDG 3</h4>
+                    <a href="https://sdgs.un.org/goals/goal3" target="_blank">Learn about SDG 3</a>
+                    <a href="#" onclick="showPage('about')">Our Mission</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Emergency</h4>
+                    <a href="tel:0979899485">Emergency: 0979899485</a>
+                    <a href="tel:0979899485">Crisis Line: 0979899485</a>
+                    <a href="sms:0979899485">Text: HOME to 0979899485</a>
+                </div>
+            </div>
+            <div style="border-top: 1px solid #555; padding-top: 1rem; margin-top: 2rem;">
+                <p>&copy; 2025 MindConnect. Supporting mental health and SDG 3: Good Health and Well-being.</p>
+                <p style="font-size: 0.9rem; color: #ccc;">If you're experiencing a mental health emergency, please contact emergency services immediately.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Application State
+        let currentUser = null;
+        let userRegistrations = [];
+        let checkins = [];
+        
+        // Navigation Functions
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Find and activate current nav link
+            const currentLink = document.querySelector(`[onclick="showPage('${pageId}')"]`);
+            if (currentLink) {
+                currentLink.classList.add('active');
+            }
+            
+            // Close mobile menu if open
+            document.getElementById('navMenu').classList.remove('active');
+        }
+        
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+        
+        // Registration Functions
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            const buttonText = document.getElementById('registerButtonText');
+            const buttonLoader = document.getElementById('registerButtonLoader');
+            buttonText.style.display = 'none';
+            buttonLoader.style.display = 'inline-block';
+            
+            // Get form data
+            const formData = new FormData(e.target);
+            const userData = {
+                id: Date.now(),
+                fullName: formData.get('fullName'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                age: formData.get('age'),
+                location: formData.get('location'),
+                supportTypes: formData.getAll('supportTypes'),
+                urgencyLevel: formData.get('urgencyLevel'),
+                additionalInfo: formData.get('additionalInfo'),
+                registrationDate: new Date().toISOString(),
+                privacy: formData.get('privacy'),
+                newsletter: formData.get('newsletter')
+            };
+            
+            // Simulate registration process
+            setTimeout(() => {
+                // Store user data
+                userRegistrations.push(userData);
+                currentUser = userData;
+                
+                // Reset loading state
+                buttonText.style.display = 'inline-block';
+                buttonLoader.style.display = 'none';
+                
+                // Show success message
+                showAlert('success', `Welcome to MindConnect, ${userData.fullName}! Your account has been created successfully.`);
+                
+                // Reset form
+                e.target.reset();
+                
+                // Navigate to dashboard
+                setTimeout(() => {
+                    showPage('dashboard');
+                    updateDashboard();
+                }, 2000);
+                
+            }, 2000);
+        });
+        
+        // Support Search Functions
+        document.getElementById('supportSearchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const searchData = {
+                location: formData.get('searchLocation'),
+                type: formData.get('supportType'),
+                format: formData.get('meetingFormat')
+            };
+            
+            showAlert('success', `Searching for support options in ${searchData.location || 'your area'}...`);
+            
+            // In a real application, this would make an API call
+            setTimeout(() => {
+                showAlert('success', 'Search completed! Here are the available support options in your area.');
+            }, 1500);
+        });
+        
+        // Check-in Functions
+        function showCheckInModal() {
+            document.getElementById('checkinModal').style.display = 'block';
+        }
+        
+        function closeCheckinModal() {
+            document.getElementById('checkinModal').style.display = 'none';
+        }
+        
+        document.getElementById('checkinForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const checkinData = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                mood: formData.get('moodRating'),
+                activities: formData.getAll('activities'),
+                notes: formData.get('notes')
+            };
+            
+            checkins.push(checkinData);
+            
+            showAlert('success', 'Check-in saved successfully! Keep up the great work.');
+            closeCheckinModal();
+            
+            // Reset form
+            e.target.reset();
+            
+            // Update dashboard if we're on it
+            if (document.getElementById('dashboard').classList.contains('active')) {
+                updateDashboard();
+            }
+        });
+        
+        // Crisis Support Functions
+        function showCrisisModal() {
+            document.getElementById('crisisModal').style.display = 'block';
+        }
+        
+        function closeCrisisModal() {
+            document.getElementById('crisisModal').style.display = 'none';
+        }
+        
+        function callCrisisLine() {
+            if (confirm('This will call the Suicide & Crisis Lifeline (988). Continue?')) {
+                window.location.href = 'tel:988';
+            }
+        }
+        
+        // Dashboard Functions
+        function updateDashboard() {
+            // Update dashboard statistics
+            if (currentUser) {
+                const registrationDate = new Date(currentUser.registrationDate);
+                const today = new Date();
+                const daysDiff = Math.floor((today - registrationDate) / (1000 * 60 * 60 * 24));
+                
+                document.getElementById('daysJoined').textContent = daysDiff;
+                document.getElementById('checkins').textContent = checkins.length;
+                document.getElementById('connections').textContent = currentUser.supportTypes ? currentUser.supportTypes.length : 0;
+                document.getElementById('resourcesUsed').textContent = Math.floor(Math.random() * 15) + 5;
+            }
+        }
+        
+        // Resource Interaction Functions
+        function joinPeerGroup() {
+            showAlert('success', 'Great! We\'ll connect you with a peer support group coordinator within 24 hours.');
+        }
+        
+        function findHealthcare() {
+            showAlert('success', 'Searching for healthcare providers in your area. You\'ll receive a list of available options shortly.');
+        }
+        
+        function findCounselors() {
+            showAlert('success', 'Finding licensed counselors near you. We\'ll send you contact information and availability.');
+        }
+        
+        function findFaithSupport() {
+            showAlert('success', 'Connecting you with faith-based mental health support in your community.');
+        }
+        
+        function exploreNGOs() {
+            showAlert('success', 'Exploring NGO mental health programs. You\'ll receive information about available services.');
+        }
+        
+        // Support Group Functions
+        function joinGroup(groupId) {
+            showAlert('success', 'Request sent! The group facilitator will contact you within 48 hours with joining information.');
+        }
+        
+        function contactGroup(groupId) {
+            showAlert('success', 'Contact information sent to your email. You can reach out directly to learn more.');
+        }
+        
+        function bookAppointment(providerId) {
+            showAlert('success', 'Appointment request submitted. The provider will contact you within 1-2 business days.');
+        }
+        
+        function learnMore(providerId) {
+            showAlert('success', 'More information about this provider has been sent to your email.');
+        }
+        
+        function contactHospital(hospitalId) {
+            showAlert('success', 'Contact information provided. You can call directly or request a callback.');
+        }
+        
+        function getDirections(locationId) {
+            showAlert('success', 'Directions sent to your phone. You can also access them anytime from your dashboard.');
+        }
+        
+        function joinMinistry(ministryId) {
+            showAlert('success', 'Ministry coordinator will reach out to welcome you and provide meeting details.');
+        }
+        
+        function contactMinistry(ministryId) {
+            showAlert('success', 'Contact information provided. Feel free to reach out with any questions.');
+        }
+        
+        function explorePrograms(ngoId) {
+            showAlert('success', 'Program information sent to your email. Explore various mental health initiatives.');
+        }
+        
+        function volunteer(ngoId) {
+            showAlert('success', 'Thank you for your interest! Volunteer coordinator will contact you about opportunities.');
+        }
+        
+        // Dashboard Action Functions
+        function viewSchedule() {
+            showAlert('success', 'Your upcoming appointments and sessions are displayed in your personal calendar.');
+        }
+        
+        function viewMoodTrends() {
+            showAlert('success', 'Mood tracking chart updated. Review your progress patterns over time.');
+        }
+        
+        function manageGoals() {
+            showAlert('success', 'Goal management tools opened. Set new goals and track your achievements.');
+        }
+        
+        // Utility Functions
+        function showAlert(type, message) {
+            // Remove any existing alerts
+            const existingAlerts = document.querySelectorAll('.alert');
+            existingAlerts.forEach(alert => alert.remove());
+            
+            // Create new alert
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            
+            // Insert alert at top of current page
+            const currentPage = document.querySelector('.page.active');
+            const container = currentPage.querySelector('.container');
+            container.insertBefore(alert, container.firstChild);
+            
+            // Auto-remove alert after 5 seconds
+            setTimeout(() => {
+                if (alert.parentNode) {
+                    alert.remove();
+                }
+            }, 5000);
+            
+            // Scroll to top to show alert
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+        
+        // Handle urgent support requests
+        function handleUrgentRequest() {
+            const urgencyLevel = document.getElementById('urgencyLevel').value;
+            if (urgencyLevel === 'urgent') {
+                if (confirm('You indicated you need immediate help. Would you like to connect with crisis support resources right now?')) {
+                    showCrisisModal();
+                }
+            }
+        }
+        
+        // Add event listener for urgency level changes
+        document.addEventListener('DOMContentLoaded', function() {
+            const urgencySelect = document.getElementById('urgencyLevel');
+            if (urgencySelect) {
+                urgencySelect.addEventListener('change', handleUrgentRequest);
+            }
+        });
+        
+        // Initialize dashboard on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate some existing data for demo purposes
+            currentUser = {
+                fullName: 'Demo User',
+                registrationDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(), // 15 days ago
+                supportTypes: ['peer', 'counseling', 'healthcare']
+            };
+            
+            // Add some sample check-ins
+            for (let i = 0; i < 12; i++) {
+                checkins.push({
+                    id: Date.now() + i,
+                    date: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString(),
+                    mood: Math.floor(Math.random() * 10) + 1
+                });
+            }
+            
+            updateDashboard();
+        });
+    </script>
+</body>
+</html>
